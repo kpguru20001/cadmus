@@ -1,3 +1,4 @@
+import { useWalletStore } from "@/stores/wallet";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
@@ -16,8 +17,26 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/AboutView.vue"),
+      meta: {
+        walletRequired: true,
+      },
     },
   ],
+});
+
+router.beforeEach((to, _, next) => {
+  const walletStore = useWalletStore();
+  if (to.meta["walletRequired"] === true) {
+    console.log(walletStore.web3Modal.cachedProvider);
+    if (walletStore.web3Modal.cachedProvider !== "") {
+      walletStore.connect();
+      next();
+    } else {
+      next("/");
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

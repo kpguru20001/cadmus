@@ -1,6 +1,21 @@
 <script setup lang="ts">
 import { NButton, NIcon } from "naive-ui";
 import { LinkSquare16Regular } from "@vicons/fluent";
+import { useWalletStore } from "@/stores/wallet";
+import { useErrorManager } from "@/stores/error";
+import router from "@/router";
+
+async function connectWallet() {
+  const walletStore = useWalletStore();
+  const errorManager = useErrorManager();
+  await walletStore.connect();
+  // console.log(walletStore.walletLibrary?.getNetwork());
+  if (errorManager.walletError !== "") {
+    alert(errorManager.walletError);
+  } else {
+    router.push("/about");
+  }
+}
 </script>
 <template>
   <main class="h-full">
@@ -20,12 +35,15 @@ import { LinkSquare16Regular } from "@vicons/fluent";
           block
           strong
           class="bg-cyberYellow-100 mt-4"
-          ><template #icon>
-            <n-icon>
-              <link-square-16-regular />
-            </n-icon> </template
-          >Connect you wallet</n-button
+          @click="connectWallet"
         >
+          <template #icon>
+            <n-icon>
+              <LinkSquare16Regular />
+            </n-icon>
+          </template>
+          Connect you wallet
+        </n-button>
       </div>
     </div>
   </main>
