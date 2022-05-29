@@ -9,15 +9,20 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@biconomy/mexa": "^2.0.32",
+    "eth-sig-util": "^3.0.1",
+    "ethereumjs-abi": "^0.6.8",
     "ethers": "^5.6.8",
     "pinia": "^2.0.13",
     "rollup-plugin-polyfill-node": "^0.9.0",
+    "safe-buffer": "^5.2.1",
     "vue": "^3.2.33",
     "vue-router": "^4.0.14",
     "web3modal": "^1.9.7"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
+    "@types/ethereumjs-abi": "^0.6.3",
     "@types/node": "^17.0.36",
     "@vicons/fluent": "^0.12.0",
     "@vitejs/plugin-vue": "^2.3.1",

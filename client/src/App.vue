@@ -19,7 +19,7 @@ const themeOverrides: GlobalThemeOverrides = {
 
 <template>
   <n-config-provider
-    class="h-full font-poppins"
+    class="tw-h-full tw-font-poppins"
     :theme-overrides="themeOverrides"
     :theme="darkTheme"
   >

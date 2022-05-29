@@ -18,12 +18,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { NButton, NIcon } from "naive-ui";
 import { LinkSquare16Regular } from "@vicons/fluent";
-import { ethers } from "ethers";
-import { abi } from "../../cadmusRouter.json";
-import { useWalletStore } from "@/stores/wallet";
+// import { ethers } from "ethers";
+// import { abi } from "../../cadmusRouter.json";
+// import { useWalletStore } from "@/stores/wallet";
 
 const transact = () => {
   console.log("transact");
