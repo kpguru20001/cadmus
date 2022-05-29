@@ -74,6 +74,8 @@
           quaternary
           @click="showAdvancedOptions = !showAdvancedOptions"
           icon-placement="right"
+          block
+          class="tw-px-0"
         >
           Show Advanced Options
           <template #icon>
@@ -92,10 +94,10 @@
         >
           <div class="tw-text-subtitle1 tw-mb-4">Transaction Settings</div>
           <div
-            class="tw-flex tw-flex-row tw-flex-nowrap tw-justify-center tw-items-center"
+            class="tw-flex tw-flex-row tw-flex-nowrap tw-justify-center tw-items-center tw-w-full"
           >
             <div class="tw-basis-1/3 tw-mr-2">Slippage Tolerance?</div>
-            <n-input-group class="tw-w-96 tw-basis-2/3">
+            <n-input-group class="tw-basis-2/3">
               <n-input-number
                 :style="{ width: '80%' }"
                 :show-button="false"
@@ -113,16 +115,16 @@
             </n-input-group>
           </div>
           <div
-            class="tw-flex tw-flex-row tw-flex-nowrap tw-justify-center tw-items-center tw-mt-2"
+            class="tw-flex tw-flex-row tw-flex-nowrap tw-justify-center tw-items-center tw-mt-2 tw-w-full"
           >
             <div class="tw-basis-1/3 tw-mr-2">Tx Deadline?</div>
-            <n-input-group class="tw-w-96 tw-basis-2/3">
+            <n-input-group class="tw-basis-2/3">
               <n-input-number
                 :style="{ width: '80%' }"
                 :show-button="false"
                 size="small"
                 :keyboard="{ ArrowUp: false, ArrowDown: false }"
-                placeholder="Deadline"
+                placeholder="Deadline to complete"
               >
                 <template #suffix>
                   <a class="tw-text-raisinBlack-110">min</a>
@@ -189,6 +191,9 @@ const transact = () => {
 
 <style>
 .collapse:nth-child(n) {
+  width: 100%;
+}
+.collapse > div {
   width: 100%;
 }
 </style>
