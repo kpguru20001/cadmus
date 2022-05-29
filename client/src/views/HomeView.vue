@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { NButton, NIcon } from "naive-ui";
 import { LinkSquare16Regular } from "@vicons/fluent";
-import { useWalletStore } from "@/stores/wallet";
 import { useErrorManager } from "@/stores/error";
 import router from "@/router";
+import { walletConnect, walletLibrary } from "@/stores/wallet";
 
 async function connectWallet() {
-  const walletStore = useWalletStore();
   const errorManager = useErrorManager();
-  await walletStore.connect();
+  await walletConnect();
   // console.log(walletStore.walletLibrary?.getNetwork());
   if (errorManager.walletError !== "") {
     alert(errorManager.walletError);
   } else {
+    console.log(walletLibrary);
     router.push("/swap");
   }
 }

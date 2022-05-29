@@ -1,4 +1,4 @@
-import { useWalletStore } from "@/stores/wallet";
+import { walletConnect, web3Modal } from "@/stores/wallet";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
@@ -36,11 +36,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _, next) => {
-  const walletStore = useWalletStore();
   if (to.meta["walletRequired"] === true) {
-    console.log(walletStore.web3Modal.cachedProvider);
-    if (walletStore.web3Modal.cachedProvider !== "") {
-      walletStore.connect();
+    console.log(web3Modal.cachedProvider);
+    if (web3Modal.cachedProvider !== "") {
+      walletConnect();
       next();
     } else {
       next("/");

@@ -9,7 +9,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@biconomy/mexa": "^2.0.32",
+    "@pancakeswap-libs/sdk": "^1.0.1",
+    "@pancakeswap/sdk": "^2.4.5",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-abi": "^0.6.8",
     "ethers": "^5.6.8",
