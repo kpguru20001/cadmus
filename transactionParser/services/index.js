@@ -3,11 +3,12 @@ const Buffer = require('buffer/').Buffer;
 const isBuffer = require('is-buffer');
 const Routerabi = require('./RouterSwapAbi.json');
 const Erc20abi = require('./erc20.json');
-const Web3 = require('web3');
+const New = require('./new.json');
+const Web3 = require('Web3');
 // TODO: dry up and clean up
 // NOTE: this library may be deprecated in future, in favor of ethers v5 AbiCoder.
 
-const web3 = new Web3('https://bsc-dataseed.binance.org/');
+const web3 = new Web3('https://eth-mainnet.alchemyapi.io/v2/kBv1b0S0LXciIImCwhz0J4AHOyQtxtb-');
 class InputDataDecoder {
   constructor(prop) {
     this.abi = [];
@@ -506,17 +507,17 @@ async function decodeSwap(dataInputString) {
   }
 
   try {
-    // output = JSON.stringify(result, null, 2);
-    output = await string1;
+    output = JSON.stringify(result, null, 2);
+    // output = await string1;
     return output;
   } catch (error) {}
 }
-function decodeERC20(dataInputString) {
+async function decodeERC20(dataInputString) {
   let output = '';
 
   //   const abi = JSON.parse(abiInput.value.trim());
   const decoder = new InputDataDecoder(Erc20abi);
-
+ 
   // if copied and pasted from etherscan only get data we need
   let dataInput = dataInputString;
   const data = dataInput
@@ -533,5 +534,26 @@ function decodeERC20(dataInputString) {
     return output;
   } catch (error) {}
 }
+async function decodeNew(dataInputString) {
+  let output = '';
 
-module.exports = { InputDataDecoder, decodeSwap, decodeERC20 };
+  //   const abi = JSON.parse(abiInput.value.trim());
+  const decoder = new InputDataDecoder(New);
+ console.log(web3)
+  // if copied and pasted from etherscan only get data we need
+  let dataInput = dataInputString;
+  const data = dataInput
+    .trim()
+    .replace(/(?:[\s\S]*MethodID: (.*)[\s\S])?[\s\S]?\[\d\]:(.*)/gi, '$1$2');
+
+  dataInput = data;
+  const result = decoder.decodeData(data);
+
+  console.log(result);
+
+  try {
+    output = JSON.stringify(result, null, 2);
+    return output;
+  } catch (error) {}
+}
+module.exports = { InputDataDecoder, decodeSwap, decodeERC20, decodeNew };
