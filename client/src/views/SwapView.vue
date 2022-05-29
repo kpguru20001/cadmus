@@ -440,8 +440,8 @@ const tokensList = ref([
   },
 ]);
 
-const fromTokenValue = ref<string>("WBNB");
-const toTokenValue = ref<string>("USDT");
+const fromTokenValue = ref<string>("CAKE");
+const toTokenValue = ref<string>("BUSD");
 const slippage = ref(50);
 
 const tradeObject = ref<Trade>();
@@ -869,16 +869,709 @@ async function approveToken() {
 const swap = async () => {
   await walletConnect();
   // approveToken();
+  openZepSwap();
   console.log("Testing: " + (await walletLibrary?.getSigner().getAddress()));
 };
 
-/* const openZepSwap = async () => {
+const ForwarderAbi = [
+  {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "typeHash",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "typeStr",
+        type: "string",
+      },
+    ],
+    name: "RequestTypeRegistered",
+    type: "event",
+  },
+  {
+    inputs: [],
+    name: "GENERIC_PARAMS",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "value",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "gas",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "data",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct Forwarder.ForwardRequest",
+        name: "req",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes32",
+        name: "requestTypeHash",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes",
+        name: "suffixData",
+        type: "bytes",
+      },
+    ],
+    name: "_getEncoded",
+    outputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "value",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "gas",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "data",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct Forwarder.ForwardRequest",
+        name: "req",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes32",
+        name: "domainSeparator",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes32",
+        name: "requestTypeHash",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes",
+        name: "suffixData",
+        type: "bytes",
+      },
+      {
+        internalType: "bytes",
+        name: "sig",
+        type: "bytes",
+      },
+    ],
+    name: "execute",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "success",
+        type: "bool",
+      },
+      {
+        internalType: "bytes",
+        name: "ret",
+        type: "bytes",
+      },
+    ],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+    ],
+    name: "getNonce",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "typeName",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "typeSuffix",
+        type: "string",
+      },
+    ],
+    name: "registerRequestType",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    name: "typeHashes",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "value",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "gas",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "data",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct Forwarder.ForwardRequest",
+        name: "req",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes32",
+        name: "domainSeparator",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes32",
+        name: "requestTypeHash",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes",
+        name: "suffixData",
+        type: "bytes",
+      },
+      {
+        internalType: "bytes",
+        name: "sig",
+        type: "bytes",
+      },
+    ],
+    name: "verify",
+    outputs: [],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    stateMutability: "payable",
+    type: "receive",
+  },
+];
+
+const relayABI = [
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_trustedForwarder",
+        type: "address",
+      },
+    ],
+    name: "setTrustForwarder",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amountOut",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapETHForExactTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amountOutMin",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapExactETHForTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amountOutMin",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapExactETHForTokensSupportingFeeOnTransferTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amountIn",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountOutMin",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapExactTokensForETH",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amountIn",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountOutMin",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapExactTokensForETHSupportingFeeOnTransferTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amountIn",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountOutMin",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapExactTokensForTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amountIn",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountOutMin",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapExactTokensForTokensSupportingFeeOnTransferTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amountOut",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountInMax",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapTokensForExactETH",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amountOut",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountInMax",
+        type: "uint256",
+      },
+      {
+        internalType: "address[]",
+        name: "path",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "swapTokensForExactTokens",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "customRouterAddress",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_trustedForwarder",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "uniswapRouterAddress",
+        type: "address",
+      },
+    ],
+    name: "updateUniRouter",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "_unirouter",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "forwarder",
+        type: "address",
+      },
+    ],
+    name: "isTrustedForwarder",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "trustedForwarder",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "versionRecipient",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+];
+
+const RelayUrl =
+  "https://api.defender.openzeppelin.com/autotasks/6f4f37fa-6bc8-4c98-9b3c-a6dab88bdac0/runs/webhook/5ca8c6fc-1604-485a-8a30-60c239b25620/9hrvK4TBThw2cWJJMXWNHo";
+
+const EIP712DomainType = [
+  { name: "name", type: "string" },
+  { name: "version", type: "string" },
+  { name: "chainId", type: "uint256" },
+  { name: "verifyingContract", type: "address" },
+];
+
+const ForwardRequestType = [
+  { name: "from", type: "address" },
+  { name: "to", type: "address" },
+  { name: "value", type: "uint256" },
+  { name: "gas", type: "uint256" },
+  { name: "nonce", type: "uint256" },
+  { name: "data", type: "bytes" },
+];
+
+const ForwarderAddress = "0x051fdfddD0e3b11E7785C80CbfB9dD86097050aA";
+
+const TypedData = {
+  domain: {
+    name: "Defender",
+    version: "1",
+    chainId: 4,
+    verifyingContract: ForwarderAddress,
+  },
+  primaryType: "ForwardRequest",
+  types: {
+    EIP712Domain: EIP712DomainType,
+    ForwardRequest: ForwardRequestType,
+  },
+  message: {},
+};
+
+const openZepSwap = async () => {
+  setTrade(true);
   await walletConnect();
   const etherProvider = ensure(walletLibrary);
   const signer = etherProvider.getSigner();
   const from = await signer.getAddress();
   const network = await etherProvider.getNetwork();
-  if (network.chainId !== 4) throw new Error(`Must be connected to Rinkeby`);
+  if (network.chainId !== 56) throw new Error(`Must be connected to Binance`);
 
   // Get nonce for current signer
   const forwarder = new ethers.Contract(
@@ -890,30 +1583,44 @@ const swap = async () => {
     .getNonce(from)
     .then((nonce: any) => nonce.toString());
 
+  const amountIn = ethers.utils.parseUnits(
+    String(fromAmount.value),
+    ensure(getFromToken.value).decimals
+  );
+  const amountOut = ethers.utils.parseUnits(
+    String(toAmount.value),
+    ensure(getToToken.value).decimals
+  );
+
   // Encode meta-tx request
-  const cadmusInterface = new ethers.utils.Interface(config.contract.abi);
+  const cadmusInterface = new ethers.utils.Interface(relayABI);
   let expiresInMS = 600000; // let say expiration in 600 s / 10 min
   const deadline = Date.now() + expiresInMS;
-  const data = cadmusInterface.encodeFunctionData("swapTokensForTokensNew", [
-    100000000000000,
-    1800000000000000,
-    [
-      "0xF8f1AE289c0793ace4ddaA4D318AB09E78D8b1A8",
-      "0x76e00F029052dCf02a98b4AEc8943Fb0432f3aaa",
-    ],
+  const bestPath = ensure(tradeObject.value).route.path.map((t) => t.address);
+  console.log(fromAmount.value);
+  console.log(toAmount.value);
+  console.log(amountIn);
+  console.log(amountOut);
+  console.log(bestPath);
+  console.log(deadline);
+  const data = cadmusInterface.encodeFunctionData("swapExactTokensForTokens", [
+    amountIn,
+    amountOut,
+    bestPath,
     deadline,
   ]);
   const request = {
     from,
-    to: config.contract.address,
+    to: relayABI,
     value: 0,
     gas: 1e6,
     nonce,
     data,
   };
   const toSign = { ...TypedData, message: request };
+  console.log(data);
 
-  const signature = await etherProvider.send("eth_signTypedData_v4", [
+  /* const signature = await etherProvider.send("eth_signTypedData_v4", [
     from,
     JSON.stringify(toSign),
   ]);
@@ -926,8 +1633,8 @@ const swap = async () => {
   })
     .then((r) => r.json())
     .catch((e) => console.error(e));
-  console.log(response);
-}; */
+  console.log(response); */
+};
 
 // const SwapTokens = async (): Promise<any> => {
 //   if (
